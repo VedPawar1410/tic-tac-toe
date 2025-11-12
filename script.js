@@ -1,9 +1,12 @@
 //Gameboard object that uses an array to store the board's state.
 const gameBoard = (function GameBoard(){
     let board = ["", "", "", "", "", "", "", "", ""];
-    return function getBoard(){
-        return board;
-    }
+    
+    // This is the "tool"
+    const getBoard = () => board; 
+
+    // This is the "toolbox" we return
+    return { getBoard };
 })();
 
 //Player objects to hold player data (like their name and marker).
@@ -17,5 +20,6 @@ function createPlayer(playerName, playerMarker){
 const gameController = (function GameController(){
     const player1 = createPlayer("Player1","X");
     const player2 = createPlayer("Player2","O");
+    let currentPlayer = player1;
     
 })();
