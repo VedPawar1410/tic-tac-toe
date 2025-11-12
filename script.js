@@ -91,3 +91,14 @@ const gameController = (function GameController(){
     return { getCurrentPlayer, playTurn };
     
 })();
+
+gameController.playTurn(0); // Player1's turn
+// > It's Player2's turn.
+gameController.playTurn(3); // Player2's turn
+// > It's Player1's turn.
+gameController.playTurn(1);
+// > It's Player2's turn.
+gameController.playTurn(4);
+// > It's Player1's turn.
+gameController.playTurn(2);
+// > Player1 wins!
