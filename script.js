@@ -31,11 +31,13 @@ const gameController = (function GameController(){
     const player1 = createPlayer("Player1","X");
     const player2 = createPlayer("Player2","O");
     let currentPlayer = player1;
+    let gameIsOver = false;
 
     // A "tool" to get the current player
     const getCurrentPlayer = () => currentPlayer;
 
     function playTurn(index){
+        if (gameIsOver) return;
         const player = getCurrentPlayer();
         const moveSuccess = gameBoard.markSpot(index, player.marker);
 
@@ -45,12 +47,14 @@ const gameController = (function GameController(){
         else{
             if(checkForWin(player.marker)){
                 console.log(`${player.name} wins!`);
+                gameIsOver = true;
                 //game is over - player.name wins
             }
             else{
                 if(checkForTie()){
                     console.log("It's a tie!");
                     //game is over - tie
+                    gameIsOver = true;
                 }
                 else{
                     switchTurn();
@@ -92,13 +96,3 @@ const gameController = (function GameController(){
     
 })();
 
-gameController.playTurn(0); // Player1's turn
-// > It's Player2's turn.
-gameController.playTurn(3); // Player2's turn
-// > It's Player1's turn.
-gameController.playTurn(1);
-// > It's Player2's turn.
-gameController.playTurn(4);
-// > It's Player1's turn.
-gameController.playTurn(2);
-// > Player1 wins!
