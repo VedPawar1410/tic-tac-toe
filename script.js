@@ -16,7 +16,7 @@ const gameBoard = (function GameBoard(){
     }
 
     // This is the "toolbox" we return
-    return { getBoard };
+    return { getBoard, markSpot };
 })();
 
 //Player objects to hold player data (like their name and marker).
