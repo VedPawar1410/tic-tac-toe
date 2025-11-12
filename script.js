@@ -5,6 +5,16 @@ const gameBoard = (function GameBoard(){
     // This is the "tool"
     const getBoard = () => board; 
 
+    function markSpot(index, marker){
+        if(board[index] === ""){
+            board[index] = marker;
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     // This is the "toolbox" we return
     return { getBoard };
 })();
