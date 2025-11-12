@@ -60,6 +60,33 @@ const gameController = (function GameController(){
 
         }
     }
+
+    function switchTurn(){
+        currentPlayer = (currentPlayer === player1) ? player2 : player1;
+    }
+    function checkForWin(marker){
+        //We need to check all 8 winning combinations.
+        const board = gameBoard.getBoard();
+        const winConditions = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+            [0, 4, 8], [2, 4, 6]  // Diagonals
+        ];
+        for(let i=0; i<winConditions.length; i++){
+            if(winConditions[i].every(index => board[index] === marker)){
+                return true;
+            }
+        }
+        return false;
+    }
+    function checkForTie(){
+        //tie happens if the board is full.
+        const board = gameBoard.getBoard();
+        if(board.includes("")){
+            return false;
+        }
+        return true;
+    }
     // We return our "toolbox"
     return { getCurrentPlayer };
     
