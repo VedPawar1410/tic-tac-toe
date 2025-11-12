@@ -54,7 +54,7 @@ const gameController = (function GameController(){
                 }
                 else{
                     switchTurn();
-                    console.log("It's ${getCurrentPlayer().name}'s turn.");
+                    console.log(`It's ${getCurrentPlayer().name}'s turn.`);
                 }
             }
 
@@ -88,6 +88,6 @@ const gameController = (function GameController(){
         return true;
     }
     // We return our "toolbox"
-    return { getCurrentPlayer };
+    return { getCurrentPlayer, playTurn };
     
 })();
