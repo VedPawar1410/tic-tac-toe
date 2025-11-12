@@ -35,6 +35,31 @@ const gameController = (function GameController(){
     // A "tool" to get the current player
     const getCurrentPlayer = () => currentPlayer;
 
+    function playTurn(index){
+        const player = getCurrentPlayer();
+        const moveSuccess = gameBoard.markSpot(index, player.marker);
+
+        if(!moveSuccess){
+            console.log("Spot already taken")
+        }
+        else{
+            if(checkForWin(player.marker)){
+                console.log(`${player.name} wins!`);
+                //game is over - player.name wins
+            }
+            else{
+                if(checkForTie()){
+                    console.log("It's a tie!");
+                    //game is over - tie
+                }
+                else{
+                    switchTurn();
+                    console.log("It's ${getCurrentPlayer().name}'s turn.");
+                }
+            }
+
+        }
+    }
     // We return our "toolbox"
     return { getCurrentPlayer };
     
