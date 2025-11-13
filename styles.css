@@ -75,6 +75,23 @@ body {
     background-color: #2ecc71;
 }
 
+#restart-button {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: #c0392b;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+#restart-button:hover {
+    background-color: #e74c3c;
+}
+
 /* New Message Area Styles */
 .message-area {
     font-size: 1.2rem;

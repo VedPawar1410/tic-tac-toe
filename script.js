@@ -84,7 +84,16 @@ const gameController = (function () {
         return !gameBoard.getBoard().includes("");
     }
 
-    return { playTurn, startGame, getCurrentPlayer };
+    function restartGame() {
+        gameBoard.resetBoard();
+        currentPlayer = player1;
+        gameIsOver = false;
+        displayController.render();
+        displayController.setMessage(`${currentPlayer.name}'s turn (${currentPlayer.marker})`);
+    }
+    
+
+    return { playTurn, startGame, getCurrentPlayer, restartGame };
 })();
 
 // Display controller
@@ -92,6 +101,8 @@ const displayController = (function () {
     const container = document.getElementById("game-board");
     const messageArea = document.getElementById("message-area");
     const startBtn = document.getElementById("start-button");
+    const restartBtn = document.getElementById("restart-button");
+
 
     const p1Input = document.getElementById("player1");
     const p2Input = document.getElementById("player2");
@@ -126,6 +137,11 @@ const displayController = (function () {
     startBtn.addEventListener("click", () => {
         gameController.startGame(p1Input.value, p2Input.value);
     });
+
+    restartBtn.addEventListener("click", () => {
+        gameController.restartGame();
+    });
+    
 
     return { render, setMessage };
 })();
