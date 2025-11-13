@@ -1,6 +1,6 @@
 //Gameboard object that uses an array to store the board's state.
 const gameBoard = (function GameBoard(){
-    let board = ["", "", "", "", "", "", "", "", ""];
+    let board = ["X", "O", "X", "O", "X", "O", "X", "O", "X"];
 
     // This is the "tool"
     const getBoard = () => board; 
