@@ -103,11 +103,14 @@ const displayController = (function(){
         const container = document.querySelector(".game-board");
         container.innerHTML = "";
         for(let i=0; i<9; i++){
-            const div = document.createElement(".cell");
-            cell.innerText = "X";
+            const div = document.createElement("div");
+            div.classList.add("cell");
+            cell.innerText = board[i];
             container.appendChild(cell);
         }
     }
 
     return {render};
 })();
+
+displayController.render();
