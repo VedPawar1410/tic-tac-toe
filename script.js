@@ -50,18 +50,14 @@ const gameController = (function GameController(){
                 gameIsOver = true;
                 //game is over - player.name wins
             }
-            else{
-                if(checkForTie()){
-                    console.log("It's a tie!");
-                    //game is over - tie
-                    gameIsOver = true;
-                }
-                else{
-                    switchTurn();
-                    console.log(`It's ${getCurrentPlayer().name}'s turn.`);
-                }
+            else if (checkForTie()) {
+                console.log("It's a tie!");
+                gameIsOver = true;
+            } else {
+                switchTurn();
+                console.log(`It's ${getCurrentPlayer().name}'s turn.`);
             }
-
+            displayController.render();
         }
     }
 
@@ -97,10 +93,9 @@ const gameController = (function GameController(){
 })();
 
 const displayController = (function(){
-
+    const container = document.querySelector(".game-board");
     const render = () => {
         const board = gameBoard.getBoard();
-        const container = document.querySelector(".game-board");
         container.innerHTML = "";
         for(let i=0; i<board.length; i++){
             const cell = document.createElement("div");
@@ -112,7 +107,7 @@ const displayController = (function(){
     }
 
     const bindEvents = () => {
-        boardContainer.addEventListener("click", (e) => {
+        container.addEventListener("click", (e) => {
             // Check if the clicked element is a cell
             if (e.target && e.target.classList.contains("cell")) {
                 // Get the index from the data-attribute and pass to controller
@@ -127,7 +122,7 @@ const displayController = (function(){
         render();     // Draw the initial empty board
     }
 
-    return {render};
+    return {render, init};
 })();
 
-displayController.render();
+displayController.init()
