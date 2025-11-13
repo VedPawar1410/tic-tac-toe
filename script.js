@@ -96,3 +96,18 @@ const gameController = (function GameController(){
     
 })();
 
+const displayController = (function(){
+
+    const render = () => {
+        const board = gameBoard.getBoard();
+        const container = document.querySelector(".game-board");
+        container.innerHTML = "";
+        for(let i=0; i<9; i++){
+            const div = document.createElement(".cell");
+            cell.innerText = "X";
+            container.appendChild(cell);
+        }
+    }
+
+    return {render};
+})();
