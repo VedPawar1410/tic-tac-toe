@@ -13,23 +13,24 @@
         <div class="player-setup">
             <div class="player-input">
                 <label for="player1">Player 1 (X):</label>
-                <input type="text" id="player1" name="player1" placeholder="Enter name">
+                <input type="text" id="player1" placeholder="Enter name">
             </div>
+
             <div class="player-input">
                 <label for="player2">Player 2 (O):</label>
-                <input type="text" id="player2" name="player2" placeholder="Enter name">
+                <input type="text" id="player2" placeholder="Enter name">
             </div>
         </div>
-        
+
         <button id="start-button">Start Game</button>
 
-        <div class="game-board">
-            <!-- Cells will be created by JS -->
-        </div>
+        <div id="game-board" class="game-board"></div>
+
         <div class="message-area" id="message-area">
             Welcome to Tic Tac Toe!
         </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

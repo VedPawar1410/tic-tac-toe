@@ -1,128 +1,133 @@
-//Gameboard object that uses an array to store the board's state.
-const gameBoard = (function GameBoard(){
+// Gameboard object
+const gameBoard = (function () {
     let board = ["", "", "", "", "", "", "", "", ""];
 
-    // This is the "tool"
-    const getBoard = () => board; 
+    const getBoard = () => board;
 
-    function markSpot(index, marker){
-        if(board[index] === ""){
+    function markSpot(index, marker) {
+        if (board[index] === "") {
             board[index] = marker;
             return true;
         }
-        else{
-            return false;
-        }
+        return false;
     }
 
-    // This is the "toolbox" we return
-    return { getBoard, markSpot };
+    const resetBoard = () => {
+        board = ["", "", "", "", "", "", "", "", ""];
+    };
+
+    return { getBoard, markSpot, resetBoard };
 })();
 
-//Player objects to hold player data (like their name and marker).
-function createPlayer(playerName, playerMarker){
-    const name = playerName;
-    const marker = playerMarker;
-    return {name, marker};
+// Player factory
+function createPlayer(name, marker) {
+    return { name, marker };
 }
 
-//GameController object to manage the overall game flow.
-const gameController = (function GameController(){
-    const player1 = createPlayer("Player1","X");
-    const player2 = createPlayer("Player2","O");
+// Game controller
+const gameController = (function () {
+    let player1 = createPlayer("Player 1", "X");
+    let player2 = createPlayer("Player 2", "O");
     let currentPlayer = player1;
     let gameIsOver = false;
 
-    // A "tool" to get the current player
     const getCurrentPlayer = () => currentPlayer;
 
-    function playTurn(index){
+    function startGame(name1, name2) {
+        player1.name = name1 || "Player 1";
+        player2.name = name2 || "Player 2";
+
+        currentPlayer = player1;
+        gameIsOver = false;
+        gameBoard.resetBoard();
+        displayController.render();
+        displayController.setMessage(`${currentPlayer.name}'s turn (X)`);
+    }
+
+    function playTurn(index) {
         if (gameIsOver) return;
+
         const player = getCurrentPlayer();
-        const moveSuccess = gameBoard.markSpot(index, player.marker);
+        const success = gameBoard.markSpot(index, player.marker);
 
-        if(!moveSuccess){
-            console.log("Spot already taken")
+        if (!success) return;
+
+        if (checkForWin(player.marker)) {
+            displayController.setMessage(`${player.name} wins!`);
+            gameIsOver = true;
+        } else if (checkForTie()) {
+            displayController.setMessage("It's a tie!");
+            gameIsOver = true;
+        } else {
+            switchTurn();
+            displayController.setMessage(`${currentPlayer.name}'s turn (${currentPlayer.marker})`);
         }
-        else{
-            if(checkForWin(player.marker)){
-                console.log(`${player.name} wins!`);
-                gameIsOver = true;
-                //game is over - player.name wins
-            }
-            else if (checkForTie()) {
-                console.log("It's a tie!");
-                gameIsOver = true;
-            } else {
-                switchTurn();
-                console.log(`It's ${getCurrentPlayer().name}'s turn.`);
-            }
-            displayController.render();
-        }
+
+        displayController.render();
     }
 
-    function switchTurn(){
-        currentPlayer = (currentPlayer === player1) ? player2 : player1;
+    function switchTurn() {
+        currentPlayer = currentPlayer === player1 ? player2 : player1;
     }
-    function checkForWin(marker){
-        //We need to check all 8 winning combinations.
-        const board = gameBoard.getBoard();
-        const winConditions = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-            [0, 4, 8], [2, 4, 6]  // Diagonals
+
+    function checkForWin(marker) {
+        const b = gameBoard.getBoard();
+        const wins = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
         ];
-        for(let i=0; i<winConditions.length; i++){
-            if(winConditions[i].every(index => board[index] === marker)){
-                return true;
-            }
-        }
-        return false;
+        return wins.some(w => w.every(i => b[i] === marker));
     }
-    function checkForTie(){
-        //tie happens if the board is full.
-        const board = gameBoard.getBoard();
-        if(board.includes("")){
-            return false;
-        }
-        return true;
+
+    function checkForTie() {
+        return !gameBoard.getBoard().includes("");
     }
-    // We return our "toolbox"
-    return { getCurrentPlayer, playTurn };
-    
+
+    return { playTurn, startGame, getCurrentPlayer };
 })();
 
-const displayController = (function(){
-    const container = document.querySelector(".game-board");
+// Display controller
+const displayController = (function () {
+    const container = document.getElementById("game-board");
+    const messageArea = document.getElementById("message-area");
+    const startBtn = document.getElementById("start-button");
+
+    const p1Input = document.getElementById("player1");
+    const p2Input = document.getElementById("player2");
+
     const render = () => {
         const board = gameBoard.getBoard();
         container.innerHTML = "";
-        for(let i=0; i<board.length; i++){
+
+        board.forEach((val, i) => {
             const cell = document.createElement("div");
             cell.classList.add("cell");
+            if (val === "X") cell.classList.add("x");
+            if (val === "O") cell.classList.add("o");
+
             cell.dataset.index = i;
-            cell.innerText = board[i];
+            cell.textContent = val;
+
             container.appendChild(cell);
-        }
-    }
-
-    const bindEvents = () => {
-        container.addEventListener("click", (e) => {
-            // Check if the clicked element is a cell
-            if (e.target && e.target.classList.contains("cell")) {
-                // Get the index from the data-attribute and pass to controller
-                const index = parseInt(e.target.dataset.index);
-                gameController.playTurn(index);
-            }
         });
-    }
-    
-    const init = () => {
-        bindEvents(); // Set up the click listener
-        render();     // Draw the initial empty board
-    }
+    };
 
-    return {render, init};
+    const setMessage = (msg) => {
+        messageArea.textContent = msg;
+    };
+
+    container.addEventListener("click", (e) => {
+        if (e.target.classList.contains("cell")) {
+            gameController.playTurn(parseInt(e.target.dataset.index));
+        }
+    });
+
+    startBtn.addEventListener("click", () => {
+        gameController.startGame(p1Input.value, p2Input.value);
+    });
+
+    return { render, setMessage };
 })();
 
-displayController.init()
+displayController.render();
