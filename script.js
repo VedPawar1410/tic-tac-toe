@@ -111,6 +111,22 @@ const displayController = (function(){
         }
     }
 
+    const bindEvents = () => {
+        boardContainer.addEventListener("click", (e) => {
+            // Check if the clicked element is a cell
+            if (e.target && e.target.classList.contains("cell")) {
+                // Get the index from the data-attribute and pass to controller
+                const index = parseInt(e.target.dataset.index);
+                gameController.playTurn(index);
+            }
+        });
+    }
+    
+    const init = () => {
+        bindEvents(); // Set up the click listener
+        render();     // Draw the initial empty board
+    }
+
     return {render};
 })();
 
