@@ -102,9 +102,9 @@ const displayController = (function(){
         const board = gameBoard.getBoard();
         const container = document.querySelector(".game-board");
         container.innerHTML = "";
-        for(let i=0; i<9; i++){
-            const div = document.createElement("div");
-            div.classList.add("cell");
+        for(let i=0; i<board.length; i++){
+            const cell = document.createElement("div");
+            cell.classList.add("cell");
             cell.innerText = board[i];
             container.appendChild(cell);
         }
