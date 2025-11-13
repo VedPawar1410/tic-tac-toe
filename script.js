@@ -1,6 +1,6 @@
 //Gameboard object that uses an array to store the board's state.
 const gameBoard = (function GameBoard(){
-    let board = ["X", "O", "X", "O", "X", "O", "X", "O", "X"];
+    let board = ["", "", "", "", "", "", "", "", ""];
 
     // This is the "tool"
     const getBoard = () => board; 
@@ -105,6 +105,7 @@ const displayController = (function(){
         for(let i=0; i<board.length; i++){
             const cell = document.createElement("div");
             cell.classList.add("cell");
+            cell.dataset.index = i;
             cell.innerText = board[i];
             container.appendChild(cell);
         }
